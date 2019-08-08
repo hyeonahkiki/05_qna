@@ -16,3 +16,10 @@ def create(request):
     question.save()
 
     return redirect('/questions/')
+
+def index(request):
+    questions = Question.objects.all()#전체데이터 가져와
+    context = {
+        'questions' : questions
+    }
+    return render(request, 'index.html', context)
