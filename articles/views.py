@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Question
+from .models import Question, Answer
 # Create your views here.
 def new(request):
     return render(request, 'new.html')
@@ -19,7 +19,21 @@ def create(request):
 
 def index(request):
     questions = Question.objects.all()#전체데이터 가져와
+    answers = Answer.objects.all()
+
     context = {
-        'questions' : questions
+        'questions' : questions,
+        'answers' : answers,
     }
     return render(request, 'index.html', context)
+
+def answer_create(request, question_id):
+    content = request.GET.get('content')
+
+    question = Question.objects.get(id=question_id)
+
+    answer = Answer()
+    answer.content = content
+    answer.question = question
+    answer.save()
+    return redirect('/questions/')
